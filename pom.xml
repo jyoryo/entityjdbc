@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jyoryo</groupId>
+	<artifactId>entityjdbc</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Entity Jdbc</name>
+	<description>基于Spring Jdbc，使用JPA注解，实现类似Hibernate效果，采用模板技术sql脚本分离。</description>
+	<url>https://www.jyoryo.com</url>
+
+	<properties>
+		<!-- Maven 公共配置属性 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<!-- 依赖配置版本 -->
+		<springframework4.version>4.3.18.RELEASE</springframework4.version>
+		<aspectjweaver.version>1.9.2</aspectjweaver.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<hibernate.version>5.2.17.Final</hibernate.version>
+		<hikaricp.version>3.1.0</hikaricp.version>
+		<freemarker.version>2.3.28</freemarker.version>
+		<gson.version>2.8.5</gson.version>
+		<jackson.version>2.9.6</jackson.version>
+		<dom4j.version>1.6.1</dom4j.version>
+		<junit.version>4.12</junit.version>
+		<!-- 自定义配置 -->
+		<!-- webapp source dir -->
+		<webapp.src.dir>${basedir}/src/main/webapp</webapp.src.dir>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- Lifecycle Plugin Clean 清理插件:执行清理删除已有target目录 -->
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!-- Lifecycle Plugin Resources 资源插件:执行资源文件的处理 -->
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<!-- Lifecycle Plugin Compiler 编译插件:编译所有源文件生成class文件至target\classes目录下 -->
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.7.0</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<!-- Lifecycle Plugin Test 测试插件:执行运行测试用例 -->
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.21.0</version>
+				</plugin>
+				<!-- Lifecycle Plugin Jar 打包插件:对编译后生成的文件进行打包，包名称默认为：artifactId-version -->
+				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!-- Lifecycle Plugin Install 安装插件:将上述打包生成的jar包和pom文件安装到本地的仓库中 -->
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.5.2</version>
+				</plugin>
+				<!-- Lifecycle Plugin Deploy 部署插件:将安装的jar包和pom文件部署到远程仓库 -->
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+				<!-- 将功能模块打包成war插件 -->
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.1.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+				<!-- juplo hibernate-maven-plugin 基于Hibernate生成sql schema -->
+				<plugin>
+					<groupId>de.juplo</groupId>
+					<artifactId>hibernate-maven-plugin</artifactId>
+					<version>2.1.0</version>
+					<configuration>
+						<delimiter>;</delimiter>
+						<execute>false</execute>
+						<force>true</force>
+						<scanDependencies>none</scanDependencies>
+						<scanClasses>false</scanClasses>
+						<scanTestClasses>false</scanTestClasses>
+						<show>true</show>
+						<skip>false</skip>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+			<!-- 调用Hibernate生成数据库Schema -->
+			<plugin>
+				<groupId>de.juplo</groupId>
+				<artifactId>hibernate-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<!-- Spring Framework 4 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springframework4.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springframework4.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${springframework4.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${springframework4.version}</version>
+		</dependency>
+		<!-- Spring Framework 4 <<< -->
+
+		<!-- 支持jpa注解 -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+		</dependency>
+
+		<!-- 模板 >>> -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker.version}</version>
+		</dependency>
+		<!-- 模板 <<< -->
+
+		<!-- logging >>> -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<!-- JDBC proxy driver for logging SQL and other interesting information. -->
+		<dependency>
+			<groupId>com.googlecode.log4jdbc</groupId>
+			<artifactId>log4jdbc</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- logging <<< -->
+
+		<!-- 测试 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${springframework4.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikaricp.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>mchange-commons-java</artifactId>
+			<version>0.2.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.47</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
