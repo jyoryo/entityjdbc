@@ -7,14 +7,15 @@
 	<artifactId>entityjdbc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Entity Jdbc</name>
-	<description>基于Spring Jdbc，使用JPA注解，实现类似Hibernate效果，采用模板技术sql脚本分离。</description>
+	<description>基于Spring Jdbc，使用JPA注解，实现类似Hibernate效果，采用模板技术sql脚本分离。
+	</description>
 	<url>https://www.jyoryo.com</url>
 
 	<properties>
 		<!-- Maven 公共配置属性 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<!-- 依赖配置版本 -->
 		<springframework4.version>4.3.18.RELEASE</springframework4.version>
 		<aspectjweaver.version>1.9.2</aspectjweaver.version>
@@ -213,6 +214,29 @@
 			<version>1.2</version>
 		</dependency>
 		<!-- logging <<< -->
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.7</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.6</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <optional>true</optional>
+        </dependency>
 
 		<!-- 测试 -->
 		<dependency>
