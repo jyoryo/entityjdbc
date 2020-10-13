@@ -26,7 +26,7 @@
 		<gson.version>2.8.5</gson.version>
 		<jackson.version>2.9.6</jackson.version>
 		<dom4j.version>1.6.1</dom4j.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<!-- 自定义配置 -->
 		<!-- webapp source dir -->
 		<webapp.src.dir>${basedir}/src/main/webapp</webapp.src.dir>
